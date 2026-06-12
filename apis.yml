@@ -1,0 +1,102 @@
+---
+aid: triplit
+name: Triplit
+description: >-
+  Triplit is an open-source full-stack database that syncs data between server
+  and browser in real-time, combining a client-side store with a server sync
+  engine and schema-defined collections. It offers a TypeScript-first SDK for
+  building real-time, collaborative, and offline-capable web applications,
+  supporting frameworks like React, Svelte, Vue, Solid, Angular, and Vue. Triplit
+  provides an HTTP REST API and WebSocket-based sync protocol secured with JWT
+  authentication, along with a CLI for scaffolding and managing projects. Developers
+  can self-host Triplit on their own infrastructure or deploy via Triplit Cloud.
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - Database
+  - Real-time
+  - Sync
+  - Local-first
+  - Developer Tools
+  - TypeScript
+  - Open Source
+url: https://raw.githubusercontent.com/api-evangelist/triplit/refs/heads/main/apis.yml
+created: '2026-06-12'
+modified: '2026-06-12'
+specificationVersion: '0.19'
+apis:
+  - aid: triplit:http-api
+    name: Triplit HTTP API
+    description: >-
+      RESTful HTTP API for interacting with a Triplit sync server, supporting
+      fetch, insert, bulk-insert, update, delete, delete-all, and healthcheck
+      operations. Authenticated via JWT Bearer tokens (Service or Anonymous
+      tokens). Base URL follows the pattern https://<project-id>.triplit.io.
+    humanURL: https://www.triplit.dev/docs/http-api
+    baseURL: https://<project-id>.triplit.io
+    tags:
+      - Database
+      - REST
+      - Real-time
+      - CRUD
+    properties:
+      - type: Documentation
+        url: https://www.triplit.dev/docs/http-api
+
+  - aid: triplit:client-sdk
+    name: Triplit Client SDK
+    description: >-
+      TypeScript/JavaScript client library for interacting with Triplit databases
+      locally and remotely. Provides query subscriptions, optimistic updates,
+      offline support, and real-time sync via WebSockets. Framework bindings
+      available for React, Svelte, Vue, Solid, Angular, and React Native.
+    humanURL: https://www.triplit.dev/docs/client
+    tags:
+      - SDK
+      - TypeScript
+      - JavaScript
+      - Real-time
+      - Offline
+    properties:
+      - type: Documentation
+        url: https://www.triplit.dev/docs/client
+
+  - aid: triplit:cli
+    name: Triplit CLI
+    description: >-
+      Command-line interface tool for scaffolding Triplit projects, running the
+      local full-stack development environment, managing schemas and migrations,
+      and deploying to Triplit Cloud. Installable via npm as @triplit/cli.
+    humanURL: https://www.triplit.dev/docs/cli
+    tags:
+      - CLI
+      - Developer Tools
+      - DevOps
+    properties:
+      - type: Documentation
+        url: https://www.triplit.dev/docs/cli
+
+common:
+  - type: Website
+    url: https://www.triplit.dev
+  - type: Documentation
+    url: https://www.triplit.dev/docs
+  - type: GitHubOrganization
+    url: https://github.com/aspen-cloud
+  - type: GitHubRepository
+    url: https://github.com/aspen-cloud/triplit
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/triplitdev
+  - type: Blog
+    url: https://www.triplit.dev/blog
+  - type: X
+    url: https://x.com/triplit_dev
+  - type: Plans
+    url: plans/triplit-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/triplit-rate-limits.yml
+  - type: FinOps
+    url: finops/triplit-finops.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,0 +1,40 @@
+---
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Triplit
+providerId: triplit
+created: '2026-06-12'
+modified: '2026-06-12'
+reconciled: true
+tags:
+  - Rate Limiting
+description: >-
+  Triplit is open-source and self-hosted; no published rate limits exist for the
+  self-hosted server. Rate limits are determined by the operator's infrastructure
+  configuration. The HTTP API returns standard HTTP 429 when limits are reached
+  on any managed deployment.
+sources:
+  - https://www.triplit.dev/docs/http-api
+  - https://www.triplit.dev/docs/self-hosting
+headers:
+  retryAfter: Retry-After
+responseCodes:
+  throttled: 429
+limits:
+  - name: HTTP API (Self-hosted)
+    scope: org
+    metric: requests_per_minute
+    limit: -1
+    timeFrame: minute
+    notes: >-
+      No published limit; determined by operator infrastructure. Standard HTTP 429
+      returned when capacity is exceeded.
+  - name: WebSocket Sync Connections (Self-hosted)
+    scope: org
+    metric: concurrent_connections
+    limit: -1
+    timeFrame: usage
+    notes: >-
+      No published limit; determined by server capacity and hosting
+      environment configuration.

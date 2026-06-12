@@ -1,0 +1,58 @@
+---
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Triplit
+providerId: triplit
+created: '2026-06-12'
+modified: '2026-06-12'
+reconciled: true
+tags:
+  - FinOps
+  - FOCUS
+description: FOCUS-aligned FinOps for Triplit.
+sources:
+  - https://www.triplit.dev/pricing
+  - https://www.triplit.dev/docs/self-hosting
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Triplit
+serviceCategory: Database
+billingModel:
+  pricingCategory: Open Source / Self-Hosted
+  billingFrequency: Monthly
+  billingCurrency: USD
+focusColumns:
+  ServiceName: Triplit
+  ServiceCategory: Database
+  ProviderName: Triplit (aspen-cloud)
+  PublisherName: Triplit
+  BillingCurrency: USD
+meters:
+  - name: Hosting Infrastructure
+    unit: varies
+    aggregation: sum
+    notes: >-
+      Triplit is self-hosted; costs are borne by the operator's infrastructure
+      provider (e.g., AWS, GCP, Azure, Fly.io). No direct billing from Triplit.
+  - name: npm Package Downloads
+    unit: downloads
+    aggregation: sum
+    notes: Open-source packages via npm at no cost.
+principles:
+  - name: Visibility
+    description: >-
+      Track Triplit-related infrastructure costs monthly within your hosting
+      provider's billing dashboard (compute, storage, egress).
+  - name: Optimization
+    description: >-
+      Right-size the Triplit server instance; leverage SQLite or IndexedDB
+      storage adapters appropriate for workload to minimize hosting spend.
+  - name: Accountability
+    description: >-
+      Attribute Triplit infrastructure costs to teams or projects using
+      resource tagging in your cloud provider.
