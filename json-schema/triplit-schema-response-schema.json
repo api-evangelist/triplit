@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://www.triplit.dev/schemas/schema-response",
+  "title": "Triplit Schema Response",
+  "description": "Response from the /schema endpoint containing the database schema definition",
+  "type": "object",
+  "required": ["type"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["schema", "schemaless"],
+      "description": "Indicates whether the database has a defined schema or is schemaless"
+    },
+    "schema": {
+      "type": "object",
+      "description": "The database schema definition (only present when type is 'schema')",
+      "properties": {
+        "collections": {
+          "type": "object",
+          "description": "Map of collection names to their schema definitions",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "schema": {
+                "type": "object",
+                "description": "Collection field schema"
+              },
+              "rules": {
+                "type": "object",
+                "description": "Access control rules for this collection"
+              }
+            }
+          }
+        },
+        "roles": {
+          "type": "object",
+          "description": "Role definitions for access control",
+          "additionalProperties": true
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

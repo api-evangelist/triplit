@@ -1,0 +1,19 @@
+{
+  "description": "Example: Delete a single entity from the todos collection",
+  "request": {
+    "method": "POST",
+    "url": "https://your-project-id.triplit.io/delete",
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "collectionName": "todos",
+      "entityId": "abc123"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {}
+  }
+}

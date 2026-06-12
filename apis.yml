@@ -23,6 +23,21 @@ tags:
 url: https://raw.githubusercontent.com/api-evangelist/triplit/refs/heads/main/apis.yml
 created: '2026-06-12'
 modified: '2026-06-12'
+artifacts:
+  - type: OpenAPI
+    url: openapi/triplit-http-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/triplit-entity-schema.json
+  - type: JSONSchema
+    url: json-schema/triplit-collection-query-schema.json
+  - type: JSONSchema
+    url: json-schema/triplit-error-schema.json
+  - type: JSONSchema
+    url: json-schema/triplit-schema-response-schema.json
+  - type: Vocabulary
+    url: vocabulary/triplit-vocabulary.yml
+  - type: JSONLd
+    url: json-ld/triplit-context.jsonld
 specificationVersion: '0.19'
 apis:
   - aid: triplit:http-api

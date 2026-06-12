@@ -1,0 +1,22 @@
+{
+  "description": "Example: Update the completed field of a todo entity",
+  "request": {
+    "method": "POST",
+    "url": "https://your-project-id.triplit.io/update",
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "collectionName": "todos",
+      "entityId": "abc123",
+      "changes": {
+        "completed": true
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {}
+  }
+}

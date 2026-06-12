@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://www.triplit.dev/schemas/error",
+  "title": "Triplit Error Response",
+  "description": "Error response returned by the Triplit HTTP API",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Error type name",
+      "example": "TriplitError"
+    },
+    "message": {
+      "type": "string",
+      "description": "Human-readable description of the error",
+      "example": "No token provided"
+    },
+    "status": {
+      "type": "integer",
+      "description": "HTTP status code associated with this error",
+      "example": 401
+    }
+  },
+  "required": ["name", "message", "status"],
+  "additionalProperties": false
+}

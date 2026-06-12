@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://www.triplit.dev/schemas/collection-query",
+  "title": "Triplit Collection Query",
+  "description": "A query object used to fetch entities from a Triplit collection",
+  "type": "object",
+  "required": ["collectionName"],
+  "properties": {
+    "collectionName": {
+      "type": "string",
+      "description": "The name of the collection to query",
+      "example": "todos"
+    },
+    "select": {
+      "type": "array",
+      "description": "Fields to include in the result. If omitted, all fields are returned.",
+      "items": {
+        "type": "string"
+      },
+      "example": ["id", "text", "completed"]
+    },
+    "where": {
+      "type": "array",
+      "description": "Filter conditions. Each item is a [field, operator, value] triple.",
+      "items": {
+        "type": "array",
+        "minItems": 3,
+        "maxItems": 3,
+        "prefixItems": [
+          { "type": "string", "description": "Field name" },
+          {
+            "type": "string",
+            "description": "Comparison operator",
+            "enum": ["=", "!=", "<", "<=", ">", ">=", "like", "nlike", "in", "nin", "has", "!has", "isDefined"]
+          },
+          { "description": "Comparison value" }
+        ]
+      },
+      "example": [["completed", "=", false]]
+    },
+    "order": {
+      "type": "array",
+      "description": "Sort order. Each item is a [field, direction] pair.",
+      "items": {
+        "type": "array",
+        "minItems": 2,
+        "maxItems": 2,
+        "prefixItems": [
+          { "type": "string", "description": "Field name" },
+          { "type": "string", "enum": ["ASC", "DESC"], "description": "Sort direction" }
+        ]
+      },
+      "example": [["createdAt", "DESC"]]
+    },
+    "limit": {
+      "type": "integer",
+      "description": "Maximum number of results to return",
+      "minimum": 1,
+      "example": 20
+    },
+    "after": {
+      "type": "array",
+      "description": "Pagination cursor. Contains the values of the last order-by fields.",
+      "items": {}
+    }
+  },
+  "additionalProperties": false
+}

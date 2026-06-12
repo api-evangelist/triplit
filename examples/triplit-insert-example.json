@@ -1,0 +1,29 @@
+{
+  "description": "Example: Insert a single entity into the todos collection",
+  "request": {
+    "method": "POST",
+    "url": "https://your-project-id.triplit.io/insert",
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "collectionName": "todos",
+      "entity": {
+        "id": "ghi789",
+        "text": "Read a book",
+        "completed": false,
+        "createdAt": "2026-06-12T12:00:00Z"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "id": "ghi789",
+      "text": "Read a book",
+      "completed": false,
+      "createdAt": "2026-06-12T12:00:00Z"
+    }
+  }
+}

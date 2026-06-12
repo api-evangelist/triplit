@@ -1,0 +1,37 @@
+{
+  "description": "Example: Fetch incomplete todos, ordered by creation date",
+  "request": {
+    "method": "POST",
+    "url": "https://your-project-id.triplit.io/fetch",
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "query": {
+        "collectionName": "todos",
+        "select": ["id", "text", "completed", "createdAt"],
+        "where": [["completed", "=", false]],
+        "order": [["createdAt", "DESC"]],
+        "limit": 20
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": [
+      {
+        "id": "abc123",
+        "text": "Buy groceries",
+        "completed": false,
+        "createdAt": "2026-06-12T10:00:00Z"
+      },
+      {
+        "id": "def456",
+        "text": "Schedule dentist appointment",
+        "completed": false,
+        "createdAt": "2026-06-11T09:30:00Z"
+      }
+    ]
+  }
+}

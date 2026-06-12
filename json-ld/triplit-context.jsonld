@@ -1,0 +1,109 @@
+{
+  "@context": {
+    "@vocab": "https://www.triplit.dev/vocab#",
+    "schema": "http://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "Triplit": "schema:SoftwareApplication",
+    "TriplitDatabase": "schema:Dataset",
+    "Collection": {
+      "@id": "https://www.triplit.dev/vocab#Collection",
+      "@type": "@id"
+    },
+    "Entity": {
+      "@id": "https://www.triplit.dev/vocab#Entity",
+      "@type": "@id"
+    },
+    "SyncConnection": {
+      "@id": "https://www.triplit.dev/vocab#SyncConnection",
+      "@type": "@id"
+    },
+
+    "id": "@id",
+    "collectionName": {
+      "@id": "https://www.triplit.dev/vocab#collectionName",
+      "@type": "xsd:string"
+    },
+    "entityId": {
+      "@id": "https://www.triplit.dev/vocab#entityId",
+      "@type": "xsd:string"
+    },
+    "projectId": {
+      "@id": "https://www.triplit.dev/vocab#projectId",
+      "@type": "xsd:string"
+    },
+    "clientId": {
+      "@id": "https://www.triplit.dev/vocab#clientId",
+      "@type": "xsd:string"
+    },
+    "numEntities": {
+      "@id": "https://www.triplit.dev/vocab#numEntities",
+      "@type": "xsd:integer"
+    },
+    "schema": {
+      "@id": "https://www.triplit.dev/vocab#schema",
+      "@type": "@id"
+    },
+    "collections": {
+      "@id": "https://www.triplit.dev/vocab#collections",
+      "@container": "@index"
+    },
+    "roles": {
+      "@id": "https://www.triplit.dev/vocab#roles",
+      "@container": "@index"
+    },
+    "select": {
+      "@id": "https://www.triplit.dev/vocab#select",
+      "@container": "@list"
+    },
+    "where": {
+      "@id": "https://www.triplit.dev/vocab#where",
+      "@container": "@list"
+    },
+    "order": {
+      "@id": "https://www.triplit.dev/vocab#order",
+      "@container": "@list"
+    },
+    "limit": {
+      "@id": "https://www.triplit.dev/vocab#limit",
+      "@type": "xsd:integer"
+    },
+    "noReturn": {
+      "@id": "https://www.triplit.dev/vocab#noReturn",
+      "@type": "xsd:boolean"
+    },
+    "full": {
+      "@id": "https://www.triplit.dev/vocab#full",
+      "@type": "xsd:boolean"
+    },
+    "changes": {
+      "@id": "https://www.triplit.dev/vocab#changes"
+    },
+    "inserts": {
+      "@id": "https://www.triplit.dev/vocab#inserts"
+    },
+    "webhooks": {
+      "@id": "https://www.triplit.dev/vocab#webhooks",
+      "@container": "@list"
+    },
+
+    "name": "schema:name",
+    "description": "schema:description",
+    "url": "schema:url",
+    "version": "schema:version",
+    "email": "schema:email",
+    "message": "schema:description",
+    "status": {
+      "@id": "schema:status",
+      "@type": "xsd:integer"
+    },
+    "createdAt": {
+      "@id": "schema:dateCreated",
+      "@type": "xsd:dateTime"
+    },
+    "updatedAt": {
+      "@id": "schema:dateModified",
+      "@type": "xsd:dateTime"
+    }
+  }
+}

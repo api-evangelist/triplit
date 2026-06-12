@@ -1,0 +1,63 @@
+{
+  "description": "Example: Bulk insert entities across multiple collections",
+  "request": {
+    "method": "POST",
+    "url": "https://your-project-id.triplit.io/bulk-insert",
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "Content-Type": "application/json"
+    },
+    "queryParams": {
+      "noReturn": false
+    },
+    "body": {
+      "todos": [
+        {
+          "id": "t1",
+          "text": "Buy groceries",
+          "completed": false,
+          "createdAt": "2026-06-12T10:00:00Z"
+        },
+        {
+          "id": "t2",
+          "text": "Walk the dog",
+          "completed": true,
+          "createdAt": "2026-06-12T08:00:00Z"
+        }
+      ],
+      "users": [
+        {
+          "id": "u1",
+          "name": "Alice",
+          "email": "alice@example.com"
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "todos": [
+        {
+          "id": "t1",
+          "text": "Buy groceries",
+          "completed": false,
+          "createdAt": "2026-06-12T10:00:00Z"
+        },
+        {
+          "id": "t2",
+          "text": "Walk the dog",
+          "completed": true,
+          "createdAt": "2026-06-12T08:00:00Z"
+        }
+      ],
+      "users": [
+        {
+          "id": "u1",
+          "name": "Alice",
+          "email": "alice@example.com"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,103 @@
+vocabulary:
+  name: Triplit API Vocabulary
+  description: >-
+    Core terminology used in the Triplit real-time sync database platform,
+    covering the HTTP API, client SDK, CLI, sync protocol, and schema system.
+  version: 1.0.0
+  terms:
+    - term: Collection
+      description: >-
+        A named group of entities (documents) within a Triplit database, analogous
+        to a table in SQL or a collection in MongoDB. Collections are defined in the
+        schema and enforce typed fields and access rules.
+
+    - term: Entity
+      description: >-
+        A single document or record stored in a Triplit collection. Each entity has
+        a unique `id` field plus additional typed fields defined by the collection
+        schema.
+
+    - term: CollectionQuery
+      description: >-
+        A structured query object used to fetch entities from a collection. Supports
+        `collectionName`, `select`, `where`, `order`, `limit`, and `after` fields
+        for flexible data retrieval.
+
+    - term: Schema
+      description: >-
+        A TypeScript-first definition of collections, their field types, and access
+        roles. Schemas are defined in code and synced to the server via the CLI or
+        the override-schema API endpoint.
+
+    - term: SyncEngine
+      description: >-
+        The server-side component that manages real-time data synchronization between
+        Triplit clients over WebSocket connections. Handles conflict resolution,
+        optimistic updates, and offline reconciliation.
+
+    - term: SyncConnection
+      description: >-
+        An active WebSocket connection between a Triplit client and the sync server.
+        Identified by a unique clientId and authenticated via a JWT token.
+
+    - term: ServiceToken
+      description: >-
+        A high-privilege JWT token (type `secret`) that grants admin access to Triplit
+        APIs. Required for schema management, stats, clear, delete-all, and other
+        administrative operations.
+
+    - term: AnonymousToken
+      description: >-
+        A JWT token granting standard user-level access to Triplit data operations
+        (fetch, insert, update, delete) subject to collection-level access rules.
+
+    - term: BulkInsert
+      description: >-
+        An operation that inserts multiple entities across one or more collections in
+        a single atomic transaction. Available via the `/bulk-insert` HTTP endpoint.
+
+    - term: Route
+      description: >-
+        A path segment used to route HTTP POST requests to the appropriate Triplit
+        server operation (e.g., `fetch`, `insert`, `update`, `delete`, `schema`).
+
+    - term: ProjectId
+      description: >-
+        A unique identifier for a Triplit Cloud project. Used as the subdomain in the
+        server base URL (e.g., `https://<project-id>.triplit.io`).
+
+    - term: LocalFirst
+      description: >-
+        An architectural pattern where the client-side database is the primary source
+        of truth, with changes synced to the server in the background. Triplit is
+        designed as a local-first database.
+
+    - term: OptimisticUpdate
+      description: >-
+        A technique where writes are applied immediately to the local client database
+        and then synced to the server, giving the appearance of instant feedback even
+        with network latency.
+
+    - term: Webhook
+      description: >-
+        An HTTP callback configuration that triggers external services when database
+        changes occur. Managed via the webhooks-get, webhooks-push, and webhooks-clear
+        API endpoints.
+
+    - term: DBChanges
+      description: >-
+        A low-level representation of changes to the database, used for direct
+        replication via the apply-changes endpoint. Serialized using SuperJSON format.
+
+    - term: Role
+      description: >-
+        A named set of permissions in the Triplit schema system. Roles are extracted
+        from JWT token claims and determine what operations a client can perform on
+        each collection.
+
+    - term: TriplitClient
+      description: >-
+        The TypeScript/JavaScript client library (`@triplit/client`) that provides
+        query subscriptions, optimistic updates, offline support, and real-time sync
+        via WebSockets. Framework bindings are available for React, Svelte, Vue,
+        Solid, Angular, and React Native.
