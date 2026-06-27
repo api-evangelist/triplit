@@ -36,7 +36,7 @@ artifacts:
     url: json-schema/triplit-schema-response-schema.json
   - type: Vocabulary
     url: vocabulary/triplit-vocabulary.yml
-  - type: JSONLd
+  - type: JSONLD
     url: json-ld/triplit-context.jsonld
 specificationVersion: '0.19'
 apis:

@@ -2,20 +2,11 @@
   "repo": "triplit",
   "feeds": [
     {
-      "source": "https://www.triplit.dev/rss.xml",
-      "feed_url": "https://www.triplit.dev/rss.xml",
-      "title": "",
+      "source": "https://www.triplit.dev/blog",
       "saved": 0,
-      "method": "none"
-    },
-    {
-      "source": "https://www.linkedin.com/company/triplitdev",
-      "feed_url": "https://www.linkedin.com/company/triplitdev",
-      "title": "",
-      "saved": 0,
-      "method": "none"
+      "error": "domain parked/for-sale, redirects to sedo.com"
     }
   ],
   "post_count": 0,
-  "fetched": "2026-06-14T20:42:17Z"
+  "fetched": "2026-06-27T13:17:43Z"
 }
