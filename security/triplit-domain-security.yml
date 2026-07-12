@@ -1,0 +1,23 @@
+generated: '2026-07-11'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: www.triplit.dev
+  https: false
+- host: <project-id>.triplit.io
+  https: true
+  tls_cert_error: '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch,
+    certificate is not valid for ''<project-id'
+  hsts: null
+domains:
+- domain: triplit.dev
+  dnssec: false
+  caa:
+  - 0 issue "letsencrypt.org"
+  spf: true
+  dmarc: false
+- domain: triplit.io
+  dnssec: false
+  caa: []
+  spf: false
+  dmarc: false

@@ -92,6 +92,10 @@ apis:
         url: https://www.triplit.dev/docs/cli
 
 common:
+  - type: DomainSecurity
+    url: security/triplit-domain-security.yml
+  - type: Authentication
+    url: authentication/triplit-authentication.yml
   - type: Website
     url: https://www.triplit.dev
   - type: Documentation
