@@ -92,6 +92,8 @@ apis:
         url: https://www.triplit.dev/docs/cli
 
 common:
+  - type: AgenticAccess
+    url: agentic-access/triplit-agentic-access.yml
   - type: DomainSecurity
     url: security/triplit-domain-security.yml
   - type: Authentication
