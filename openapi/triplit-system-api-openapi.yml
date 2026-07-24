@@ -1,0 +1,155 @@
+openapi: 3.0.3
+info:
+  title: Triplit HTTP Advanced System API
+  description: RESTful HTTP API for interacting with a Triplit sync server. Supports fetch, insert, bulk-insert, update, delete, delete-all, schema, stats, clear, and healthcheck operations. Authenticated via JWT Bearer tokens (Service or Anonymous tokens). Base URL follows the pattern https://<project-id>.triplit.io.
+  version: 1.0.0
+  contact:
+    name: Triplit
+    url: https://www.triplit.dev
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+- url: https://{projectId}.triplit.io
+  description: Triplit Cloud sync server
+  variables:
+    projectId:
+      description: Your Triplit project ID
+      default: your-project-id
+- url: http://localhost:6543
+  description: Local development server
+security:
+- BearerAuth: []
+tags:
+- name: System
+  description: Server health, version, and administrative endpoints
+paths:
+  /healthcheck:
+    get:
+      operationId: healthcheck
+      summary: Health check
+      description: Returns 200 OK if the server is running. Does not require authentication.
+      security: []
+      tags:
+      - System
+      responses:
+        '200':
+          description: Server is healthy
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: OK
+  /version:
+    get:
+      operationId: getVersion
+      summary: Get server version
+      description: Returns the server version string.
+      security: []
+      tags:
+      - System
+      responses:
+        '200':
+          description: Server version
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 1.0.0
+  /stats:
+    post:
+      operationId: getStats
+      summary: Get collection statistics
+      description: Returns entity count statistics for all collections. Requires a service (admin) token.
+      tags:
+      - System
+      responses:
+        '200':
+          description: Collection statistics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionStats'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /clear:
+    post:
+      operationId: clearDatabase
+      summary: Clear the database
+      description: 'Clears all data from the database. Pass `full: true` to perform a complete reset including metadata. Requires a service (admin) token.'
+      tags:
+      - System
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                full:
+                  type: boolean
+                  description: If true, performs a full reset including metadata; otherwise only clears user data
+                  default: false
+      responses:
+        '200':
+          description: Database cleared
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+components:
+  responses:
+    Forbidden:
+      description: Service key (admin token) required for this operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Missing or invalid authentication token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    CollectionStats:
+      type: array
+      description: Statistics for each collection
+      items:
+        type: object
+        properties:
+          collection:
+            type: string
+            description: Collection name
+            example: todos
+          numEntities:
+            type: integer
+            description: Number of entities in the collection
+            example: 42
+    ErrorResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Error type name
+          example: TriplitError
+        message:
+          type: string
+          description: Human-readable error description
+          example: No token provided
+        status:
+          type: integer
+          description: HTTP status code
+          example: 401
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT Bearer token. Use a Service Token (secret) for admin operations or an Anonymous token for standard user operations.
