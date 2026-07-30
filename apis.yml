@@ -11,7 +11,20 @@ description: >-
   authentication, along with a CLI for scaffolding and managing projects. Developers
   can self-host Triplit on their own infrastructure or deploy via Triplit Cloud.
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: free
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Free · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/triplit.png
 tags:
   - Database
   - Real-time
@@ -40,57 +53,112 @@ artifacts:
     url: json-ld/triplit-context.jsonld
 specificationVersion: '0.19'
 apis:
-  - aid: triplit:http-api
-    name: Triplit HTTP API
-    description: >-
-      RESTful HTTP API for interacting with a Triplit sync server, supporting
-      fetch, insert, bulk-insert, update, delete, delete-all, and healthcheck
-      operations. Authenticated via JWT Bearer tokens (Service or Anonymous
-      tokens). Base URL follows the pattern https://<project-id>.triplit.io.
-    humanURL: https://www.triplit.dev/docs/http-api
-    baseURL: https://<project-id>.triplit.io
-    tags:
-      - Database
-      - REST
-      - Real-time
-      - CRUD
-    properties:
-      - type: Documentation
-        url: https://www.triplit.dev/docs/http-api
-
-  - aid: triplit:client-sdk
-    name: Triplit Client SDK
-    description: >-
-      TypeScript/JavaScript client library for interacting with Triplit databases
-      locally and remotely. Provides query subscriptions, optimistic updates,
-      offline support, and real-time sync via WebSockets. Framework bindings
-      available for React, Svelte, Vue, Solid, Angular, and React Native.
-    humanURL: https://www.triplit.dev/docs/client
-    tags:
-      - SDK
-      - TypeScript
-      - JavaScript
-      - Real-time
-      - Offline
-    properties:
-      - type: Documentation
-        url: https://www.triplit.dev/docs/client
-
-  - aid: triplit:cli
-    name: Triplit CLI
-    description: >-
-      Command-line interface tool for scaffolding Triplit projects, running the
-      local full-stack development environment, managing schemas and migrations,
-      and deploying to Triplit Cloud. Installable via npm as @triplit/cli.
-    humanURL: https://www.triplit.dev/docs/cli
-    tags:
-      - CLI
-      - Developer Tools
-      - DevOps
-    properties:
-      - type: Documentation
-        url: https://www.triplit.dev/docs/cli
-
+- aid: triplit:http-api
+  name: Triplit HTTP API
+  description: >-
+    RESTful HTTP API for interacting with a Triplit sync server, supporting fetch, insert, bulk-insert,
+    update, delete, delete-all, and healthcheck operations. Authenticated via JWT Bearer tokens (Service
+    or Anonymous tokens). Base URL follows the pattern https://<project-id>.triplit.io.
+  humanURL: https://www.triplit.dev/docs/http-api
+  baseURL: https://<project-id>.triplit.io
+  tags:
+  - Database
+  - REST
+  - Real-time
+  - CRUD
+  properties:
+  - type: Documentation
+    url: https://www.triplit.dev/docs/http-api
+- aid: triplit:client-sdk
+  name: Triplit Client SDK
+  description: >-
+    TypeScript/JavaScript client library for interacting with Triplit databases locally and remotely.
+    Provides query subscriptions, optimistic updates, offline support, and real-time sync via WebSockets.
+    Framework bindings available for React, Svelte, Vue, Solid, Angular, and React Native.
+  humanURL: https://www.triplit.dev/docs/client
+  tags:
+  - SDK
+  - TypeScript
+  - JavaScript
+  - Real-time
+  - Offline
+  properties:
+  - type: Documentation
+    url: https://www.triplit.dev/docs/client
+- aid: triplit:cli
+  name: Triplit CLI
+  description: >-
+    Command-line interface tool for scaffolding Triplit projects, running the local full-stack development
+    environment, managing schemas and migrations, and deploying to Triplit Cloud. Installable via npm
+    as @triplit/cli.
+  humanURL: https://www.triplit.dev/docs/cli
+  tags:
+  - CLI
+  - Developer Tools
+  - DevOps
+  properties:
+  - type: Documentation
+    url: https://www.triplit.dev/docs/cli
+- aid: triplit:triplit-advanced-api
+  name: Triplit Advanced API
+  description: Low-level replication and change management endpoints
+  humanURL: https://www.triplit.dev/docs/http-api
+  baseURL: https://<project-id>.triplit.io
+  tags:
+  - Advanced
+  properties:
+  - type: OpenAPI
+    url: openapi/triplit-advanced-api-openapi.yml
+- aid: triplit:triplit-auth-api
+  name: Triplit Auth API
+  description: Authentication and token management
+  humanURL: https://www.triplit.dev/docs/http-api
+  baseURL: https://<project-id>.triplit.io
+  tags:
+  - Auth
+  properties:
+  - type: OpenAPI
+    url: openapi/triplit-auth-api-openapi.yml
+- aid: triplit:triplit-data-api
+  name: Triplit Data API
+  description: CRUD operations on collection entities
+  humanURL: https://www.triplit.dev/docs/http-api
+  baseURL: https://<project-id>.triplit.io
+  tags:
+  - Data
+  properties:
+  - type: OpenAPI
+    url: openapi/triplit-data-api-openapi.yml
+- aid: triplit:triplit-schema-api
+  name: Triplit Schema API
+  description: Database schema management
+  humanURL: https://www.triplit.dev/docs/http-api
+  baseURL: https://<project-id>.triplit.io
+  tags:
+  - Schema
+  properties:
+  - type: OpenAPI
+    url: openapi/triplit-schema-api-openapi.yml
+- aid: triplit:triplit-system-api
+  name: Triplit System API
+  description: Server health, version, and administrative endpoints
+  humanURL: https://www.triplit.dev/docs/http-api
+  baseURL: https://<project-id>.triplit.io
+  tags:
+  - System
+  properties:
+  - type: OpenAPI
+    url: openapi/triplit-system-api-openapi.yml
+- aid: triplit:triplit-webhooks-api
+  name: Triplit Webhooks API
+  description: Webhook configuration management
+  humanURL: https://www.triplit.dev/docs/http-api
+  baseURL: https://<project-id>.triplit.io
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/triplit-webhooks-api-openapi.yml
 common:
   - type: AgenticAccess
     url: agentic-access/triplit-agentic-access.yml
