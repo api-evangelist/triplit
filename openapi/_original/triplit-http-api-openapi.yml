@@ -1,0 +1,799 @@
+openapi: 3.0.3
+info:
+  title: Triplit HTTP API
+  description: >-
+    RESTful HTTP API for interacting with a Triplit sync server. Supports fetch,
+    insert, bulk-insert, update, delete, delete-all, schema, stats, clear,
+    and healthcheck operations. Authenticated via JWT Bearer tokens (Service or
+    Anonymous tokens). Base URL follows the pattern https://<project-id>.triplit.io.
+  version: 1.0.0
+  contact:
+    name: Triplit
+    url: https://www.triplit.dev
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+
+servers:
+  - url: https://{projectId}.triplit.io
+    description: Triplit Cloud sync server
+    variables:
+      projectId:
+        description: Your Triplit project ID
+        default: your-project-id
+  - url: http://localhost:6543
+    description: Local development server
+
+security:
+  - BearerAuth: []
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >-
+        JWT Bearer token. Use a Service Token (secret) for admin operations or
+        an Anonymous token for standard user operations.
+
+  schemas:
+    CollectionQuery:
+      type: object
+      required:
+        - collectionName
+      properties:
+        collectionName:
+          type: string
+          description: The name of the collection to query
+          example: todos
+        select:
+          type: array
+          description: Fields to include in the result
+          items:
+            type: string
+          example: ["id", "text", "completed"]
+        where:
+          type: array
+          description: Filter conditions
+          items:
+            type: array
+            minItems: 3
+            maxItems: 3
+          example: [["completed", "=", false]]
+        order:
+          type: array
+          description: Sorting instructions
+          items:
+            type: array
+            minItems: 2
+            maxItems: 2
+          example: [["createdAt", "DESC"]]
+        limit:
+          type: integer
+          description: Maximum number of results to return
+          example: 20
+        after:
+          type: array
+          description: Cursor for pagination
+          items: {}
+
+    Entity:
+      type: object
+      description: A database entity (document) stored in a collection
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the entity
+          example: "abc123"
+      additionalProperties: true
+
+    BulkInsertBody:
+      type: object
+      description: Map of collection names to arrays of entities to insert
+      additionalProperties:
+        type: array
+        items:
+          $ref: '#/components/schemas/Entity'
+      example:
+        todos:
+          - id: "1"
+            text: "Buy groceries"
+            completed: false
+        users:
+          - id: "u1"
+            name: "Alice"
+
+    FetchResult:
+      type: array
+      description: Array of matching entities
+      items:
+        $ref: '#/components/schemas/Entity'
+
+    CollectionStats:
+      type: array
+      description: Statistics for each collection
+      items:
+        type: object
+        properties:
+          collection:
+            type: string
+            description: Collection name
+            example: todos
+          numEntities:
+            type: integer
+            description: Number of entities in the collection
+            example: 42
+
+    SchemaResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [schema, schemaless]
+          example: schema
+        schema:
+          type: object
+          description: The database schema definition
+          additionalProperties: true
+
+    ErrorResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Error type name
+          example: TriplitError
+        message:
+          type: string
+          description: Human-readable error description
+          example: No token provided
+        status:
+          type: integer
+          description: HTTP status code
+          example: 401
+
+    WebhookDefinition:
+      type: object
+      description: Webhook configuration
+      additionalProperties: true
+
+  responses:
+    Unauthorized:
+      description: Missing or invalid authentication token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Service key (admin token) required for this operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Route not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  /healthcheck:
+    get:
+      operationId: healthcheck
+      summary: Health check
+      description: Returns 200 OK if the server is running. Does not require authentication.
+      security: []
+      tags:
+        - System
+      responses:
+        '200':
+          description: Server is healthy
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: OK
+
+  /version:
+    get:
+      operationId: getVersion
+      summary: Get server version
+      description: Returns the server version string.
+      security: []
+      tags:
+        - System
+      responses:
+        '200':
+          description: Server version
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "1.0.0"
+
+  /fetch:
+    post:
+      operationId: fetchEntities
+      summary: Fetch entities
+      description: >-
+        Executes a query against a collection and returns matching entities.
+        Supports filtering, ordering, limiting, and field selection.
+      tags:
+        - Data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - query
+              properties:
+                query:
+                  $ref: '#/components/schemas/CollectionQuery'
+            example:
+              query:
+                collectionName: todos
+                where: [["completed", "=", false]]
+                order: [["createdAt", "DESC"]]
+                limit: 10
+      responses:
+        '200':
+          description: Matching entities
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FetchResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /insert:
+    post:
+      operationId: insertEntity
+      summary: Insert a single entity
+      description: Inserts a single entity into the specified collection.
+      tags:
+        - Data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - collectionName
+                - entity
+              properties:
+                collectionName:
+                  type: string
+                  description: Target collection name
+                  example: todos
+                entity:
+                  $ref: '#/components/schemas/Entity'
+            example:
+              collectionName: todos
+              entity:
+                id: "abc123"
+                text: "Buy groceries"
+                completed: false
+      responses:
+        '200':
+          description: The inserted entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entity'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /bulk-insert:
+    post:
+      operationId: bulkInsert
+      summary: Bulk insert entities
+      description: >-
+        Inserts multiple entities across one or more collections in a single
+        transaction. Use the `noReturn` query parameter to skip returning the
+        inserted data (faster for large imports).
+      tags:
+        - Data
+      parameters:
+        - name: noReturn
+          in: query
+          description: If true, skip returning inserted entities (improves performance for large inserts)
+          required: false
+          schema:
+            type: boolean
+            default: false
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkInsertBody'
+      responses:
+        '200':
+          description: Map of collection names to arrays of inserted entities (empty if noReturn=true)
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/BulkInsertBody'
+                  - type: object
+                    description: Empty object when noReturn=true
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '413':
+          description: Payload too large (default max 100 MB)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /bulk-insert-file:
+    post:
+      operationId: bulkInsertFile
+      summary: Bulk insert entities from file upload
+      description: >-
+        Inserts multiple entities from a multipart form-data upload. The `data`
+        field should contain the JSON payload equivalent to the bulk-insert body.
+      tags:
+        - Data
+      parameters:
+        - name: noReturn
+          in: query
+          description: If true, skip returning inserted entities
+          required: false
+          schema:
+            type: boolean
+            default: false
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  type: string
+                  description: JSON string of the bulk insert payload (map of collection names to entity arrays)
+      responses:
+        '200':
+          description: Inserted entities or empty object if noReturn=true
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: No data provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /update:
+    post:
+      operationId: updateEntity
+      summary: Update an entity
+      description: Applies a partial update (patch) to an existing entity.
+      tags:
+        - Data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - collectionName
+                - entityId
+                - changes
+              properties:
+                collectionName:
+                  type: string
+                  description: Collection containing the entity
+                  example: todos
+                entityId:
+                  type: string
+                  description: ID of the entity to update
+                  example: abc123
+                changes:
+                  type: object
+                  description: Fields to update (partial patch)
+                  additionalProperties: true
+                  example:
+                    completed: true
+            example:
+              collectionName: todos
+              entityId: abc123
+              changes:
+                completed: true
+      responses:
+        '200':
+          description: Update successful
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /delete:
+    post:
+      operationId: deleteEntity
+      summary: Delete an entity
+      description: Deletes a single entity from a collection by ID.
+      tags:
+        - Data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - collectionName
+                - entityId
+              properties:
+                collectionName:
+                  type: string
+                  description: Collection containing the entity
+                  example: todos
+                entityId:
+                  type: string
+                  description: ID of the entity to delete
+                  example: abc123
+            example:
+              collectionName: todos
+              entityId: abc123
+      responses:
+        '200':
+          description: Delete successful
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /delete-all:
+    post:
+      operationId: deleteAllEntities
+      summary: Delete all entities in a collection
+      description: >-
+        Deletes all entities in the specified collection. Requires a service
+        (admin) token.
+      tags:
+        - Data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - collectionName
+              properties:
+                collectionName:
+                  type: string
+                  description: Collection to clear
+                  example: todos
+            example:
+              collectionName: todos
+      responses:
+        '200':
+          description: All entities deleted
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /schema:
+    post:
+      operationId: getSchema
+      summary: Get database schema
+      description: >-
+        Returns the current schema definition for the database. Requires a
+        service (admin) token.
+      tags:
+        - Schema
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                format:
+                  type: string
+                  enum: [json]
+                  default: json
+                  description: Format for the schema response
+      responses:
+        '200':
+          description: Schema definition
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SchemaResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /override-schema:
+    post:
+      operationId: overrideSchema
+      summary: Override database schema
+      description: >-
+        Replaces the current database schema with a new one. Requires a service
+        (admin) token. If collections are provided without roles, default roles
+        are applied automatically.
+      tags:
+        - Schema
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - schema
+              properties:
+                schema:
+                  type: object
+                  description: New schema definition
+                  properties:
+                    collections:
+                      type: object
+                      additionalProperties: true
+                    roles:
+                      type: object
+                      additionalProperties: true
+      responses:
+        '200':
+          description: Schema override result
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /stats:
+    post:
+      operationId: getStats
+      summary: Get collection statistics
+      description: >-
+        Returns entity count statistics for all collections. Requires a service
+        (admin) token.
+      tags:
+        - System
+      responses:
+        '200':
+          description: Collection statistics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionStats'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /clear:
+    post:
+      operationId: clearDatabase
+      summary: Clear the database
+      description: >-
+        Clears all data from the database. Pass `full: true` to perform a
+        complete reset including metadata. Requires a service (admin) token.
+      tags:
+        - System
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                full:
+                  type: boolean
+                  description: >-
+                    If true, performs a full reset including metadata; otherwise
+                    only clears user data
+                  default: false
+      responses:
+        '200':
+          description: Database cleared
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /update-token:
+    post:
+      operationId: updateToken
+      summary: Update authentication token for a sync connection
+      description: >-
+        Updates the JWT token for an active WebSocket sync connection identified
+        by clientId. Useful for token refresh without reconnecting. Roles must
+        remain equivalent between old and new token.
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - clientId
+              properties:
+                clientId:
+                  type: string
+                  description: The client ID of the active sync connection
+                  example: "550e8400-e29b-41d4-a716-446655440000"
+      responses:
+        '200':
+          description: Token updated successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: OK
+        '400':
+          description: No connection found for clientId
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /apply-changes:
+    post:
+      operationId: applyChanges
+      summary: Apply raw database changes
+      description: >-
+        Applies a serialized set of database changes directly. Used for
+        advanced replication scenarios. Requires a service (admin) token.
+        Changes should be serialized using SuperJSON format.
+      tags:
+        - Advanced
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - changes
+              properties:
+                changes:
+                  type: object
+                  description: SuperJSON-serialized DBChanges object
+      responses:
+        '200':
+          description: Changes applied
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /webhooks-get:
+    post:
+      operationId: getWebhooks
+      summary: Get webhook configurations
+      description: Returns all configured webhooks. Requires a service (admin) token.
+      tags:
+        - Webhooks
+      responses:
+        '200':
+          description: Webhook configurations
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /webhooks-push:
+    post:
+      operationId: pushWebhooks
+      summary: Add webhook configurations
+      description: Adds new webhook configurations. Requires a service (admin) token.
+      tags:
+        - Webhooks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - webhooks
+              properties:
+                webhooks:
+                  $ref: '#/components/schemas/WebhookDefinition'
+      responses:
+        '200':
+          description: Webhooks added
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /webhooks-clear:
+    post:
+      operationId: clearWebhooks
+      summary: Clear all webhook configurations
+      description: Removes all webhook configurations. Requires a service (admin) token.
+      tags:
+        - Webhooks
+      responses:
+        '200':
+          description: Webhooks cleared
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+tags:
+  - name: System
+    description: Server health, version, and administrative endpoints
+  - name: Data
+    description: CRUD operations on collection entities
+  - name: Schema
+    description: Database schema management
+  - name: Auth
+    description: Authentication and token management
+  - name: Webhooks
+    description: Webhook configuration management
+  - name: Advanced
+    description: Low-level replication and change management endpoints

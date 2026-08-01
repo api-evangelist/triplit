@@ -1,0 +1,24 @@
+{
+  "provider": "triplit",
+  "sources": [
+    "triplit-advanced-api-openapi.yml",
+    "triplit-auth-api-openapi.yml",
+    "triplit-data-api-openapi.yml",
+    "triplit-schema-api-openapi.yml",
+    "triplit-system-api-openapi.yml",
+    "triplit-webhooks-api-openapi.yml"
+  ],
+  "outputs": [
+    "triplit-advanced-api-openapi.yml",
+    "triplit-auth-api-openapi.yml",
+    "triplit-data-api-openapi.yml",
+    "triplit-schema-api-openapi.yml",
+    "triplit-system-api-openapi.yml",
+    "triplit-webhooks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
