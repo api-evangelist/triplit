@@ -1,0 +1,54 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Triplit HTTP Advanced Schema API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Schema",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get database schema",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{projectId}.triplit.io/schema",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns the current schema definition for the database. Requires a service (admin) token."
+        },
+        {
+          "info": {
+            "name": "Override database schema",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{projectId}.triplit.io/override-schema",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replaces the current database schema with a new one. Requires a service (admin) token. If collections are provided without roles, default roles are applied automatically."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Triplit HTTP Advanced API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Advanced",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Apply raw database changes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{projectId}.triplit.io/apply-changes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Applies a serialized set of database changes directly. Used for advanced replication scenarios. Requires a service (admin) token. Changes should be serialized using SuperJSON format."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

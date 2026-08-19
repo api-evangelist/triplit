@@ -1,0 +1,151 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Triplit HTTP Advanced Data API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Data",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch entities",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{projectId}.triplit.io/fetch",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Executes a query against a collection and returns matching entities. Supports filtering, ordering, limiting, and field selection."
+        },
+        {
+          "info": {
+            "name": "Insert a single entity",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{projectId}.triplit.io/insert",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Inserts a single entity into the specified collection."
+        },
+        {
+          "info": {
+            "name": "Bulk insert entities",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{projectId}.triplit.io/bulk-insert",
+            "params": [
+              {
+                "name": "noReturn",
+                "value": "",
+                "type": "query",
+                "description": "If true, skip returning inserted entities (improves performance for large inserts)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Inserts multiple entities across one or more collections in a single transaction. Use the `noReturn` query parameter to skip returning the inserted data (faster for large imports)."
+        },
+        {
+          "info": {
+            "name": "Bulk insert entities from file upload",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{projectId}.triplit.io/bulk-insert-file",
+            "params": [
+              {
+                "name": "noReturn",
+                "value": "",
+                "type": "query",
+                "description": "If true, skip returning inserted entities"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "data",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Inserts multiple entities from a multipart form-data upload. The `data` field should contain the JSON payload equivalent to the bulk-insert body."
+        },
+        {
+          "info": {
+            "name": "Update an entity",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{projectId}.triplit.io/update",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Applies a partial update (patch) to an existing entity."
+        },
+        {
+          "info": {
+            "name": "Delete an entity",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{projectId}.triplit.io/delete",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deletes a single entity from a collection by ID."
+        },
+        {
+          "info": {
+            "name": "Delete all entities in a collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{projectId}.triplit.io/delete-all",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deletes all entities in the specified collection. Requires a service (admin) token."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,61 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Triplit HTTP Advanced Webhooks API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get webhook configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{projectId}.triplit.io/webhooks-get"
+          },
+          "docs": "Returns all configured webhooks. Requires a service (admin) token."
+        },
+        {
+          "info": {
+            "name": "Add webhook configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{projectId}.triplit.io/webhooks-push",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds new webhook configurations. Requires a service (admin) token."
+        },
+        {
+          "info": {
+            "name": "Clear all webhook configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{projectId}.triplit.io/webhooks-clear"
+          },
+          "docs": "Removes all webhook configurations. Requires a service (admin) token."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

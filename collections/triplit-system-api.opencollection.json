@@ -1,0 +1,72 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Triplit HTTP Advanced System API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "System",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Health check",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{projectId}.triplit.io/healthcheck"
+          },
+          "docs": "Returns 200 OK if the server is running. Does not require authentication."
+        },
+        {
+          "info": {
+            "name": "Get server version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{projectId}.triplit.io/version"
+          },
+          "docs": "Returns the server version string."
+        },
+        {
+          "info": {
+            "name": "Get collection statistics",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{projectId}.triplit.io/stats"
+          },
+          "docs": "Returns entity count statistics for all collections. Requires a service (admin) token."
+        },
+        {
+          "info": {
+            "name": "Clear the database",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{projectId}.triplit.io/clear",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Clears all data from the database. Pass `full: true` to perform a complete reset including metadata. Requires a service (admin) token."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
