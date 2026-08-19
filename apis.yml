@@ -51,7 +51,7 @@ artifacts:
     url: vocabulary/triplit-vocabulary.yml
   - type: JSONLD
     url: json-ld/triplit-context.jsonld
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: triplit:http-api
   name: Triplit HTTP API
