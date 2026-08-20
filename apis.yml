@@ -27,6 +27,14 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/triplit.png
 tags:
   - Database
+  - Real-Time
+  - Sync
+  - Local-First
+  - Developer Tools
+  - TypeScript
+  - Open-Source
+tags_raw:
+  - Database
   - Real-time
   - Sync
   - Local-first
@@ -64,6 +72,11 @@ apis:
   tags:
   - Database
   - REST
+  - Real-Time
+  - CRUD
+  tags_raw:
+  - Database
+  - REST
   - Real-time
   - CRUD
   properties:
@@ -77,6 +90,12 @@ apis:
     Framework bindings available for React, Svelte, Vue, Solid, Angular, and React Native.
   humanURL: https://www.triplit.dev/docs/client
   tags:
+  - SDK
+  - TypeScript
+  - JavaScript
+  - Real-Time
+  - Offline
+  tags_raw:
   - SDK
   - TypeScript
   - JavaScript
@@ -115,6 +134,8 @@ apis:
   humanURL: https://www.triplit.dev/docs/http-api
   baseURL: https://<project-id>.triplit.io
   tags:
+  - Authentication
+  tags_raw:
   - Auth
   properties:
   - type: OpenAPI
@@ -155,6 +176,8 @@ apis:
   humanURL: https://www.triplit.dev/docs/http-api
   baseURL: https://<project-id>.triplit.io
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
