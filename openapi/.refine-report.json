@@ -1,12 +1,7 @@
 {
   "provider": "triplit",
   "sources": [
-    "triplit-advanced-api-openapi.yml",
-    "triplit-auth-api-openapi.yml",
-    "triplit-data-api-openapi.yml",
-    "triplit-schema-api-openapi.yml",
-    "triplit-system-api-openapi.yml",
-    "triplit-webhooks-api-openapi.yml"
+    "_original/triplit-http-api-openapi.yml"
   ],
   "outputs": [
     "triplit-advanced-api-openapi.yml",
@@ -19,6 +14,17 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "triplit-http-api-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "triplit-advanced-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "triplit-auth-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "triplit-data-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "triplit-schema-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "triplit-system-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "triplit-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

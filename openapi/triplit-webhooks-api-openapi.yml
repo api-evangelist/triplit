@@ -1,7 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Triplit HTTP Advanced Webhooks API
-  description: RESTful HTTP API for interacting with a Triplit sync server. Supports fetch, insert, bulk-insert, update, delete, delete-all, schema, stats, clear, and healthcheck operations. Authenticated via JWT Bearer tokens (Service or Anonymous tokens). Base URL follows the pattern https://<project-id>.triplit.io.
+  title: Triplit HTTP Webhooks API
+  description: RESTful HTTP API for interacting with a Triplit sync server. Supports fetch, insert, bulk-insert, update, delete, delete-all, schema, stats, clear, and healthcheck operations. Authenticated via JWT Bearer tokens (Service or Anonymous tokens). Base URL follows the pattern https://.triplit.io.
   version: 1.0.0
   contact:
     name: Triplit
@@ -91,14 +91,14 @@ paths:
           $ref: '#/components/responses/Forbidden'
 components:
   responses:
-    Forbidden:
-      description: Service key (admin token) required for this operation
+    Unauthorized:
+      description: Missing or invalid authentication token
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Missing or invalid authentication token
+    Forbidden:
+      description: Service key (admin token) required for this operation
       content:
         application/json:
           schema:
