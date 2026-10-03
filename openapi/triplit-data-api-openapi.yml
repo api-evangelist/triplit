@@ -309,6 +309,21 @@ paths:
           $ref: '#/components/responses/Forbidden'
 components:
   schemas:
+    BulkInsertBody:
+      type: object
+      description: Map of collection names to arrays of entities to insert
+      additionalProperties:
+        type: array
+        items:
+          $ref: '#/components/schemas/Entity'
+      example:
+        todos:
+        - id: '1'
+          text: Buy groceries
+          completed: false
+        users:
+        - id: u1
+          name: Alice
     CollectionQuery:
       type: object
       required:
@@ -356,26 +371,6 @@ components:
           type: array
           description: Cursor for pagination
           items: {}
-    FetchResult:
-      type: array
-      description: Array of matching entities
-      items:
-        $ref: '#/components/schemas/Entity'
-    BulkInsertBody:
-      type: object
-      description: Map of collection names to arrays of entities to insert
-      additionalProperties:
-        type: array
-        items:
-          $ref: '#/components/schemas/Entity'
-      example:
-        todos:
-        - id: '1'
-          text: Buy groceries
-          completed: false
-        users:
-        - id: u1
-          name: Alice
     Entity:
       type: object
       description: A database entity (document) stored in a collection
@@ -400,6 +395,11 @@ components:
           type: integer
           description: HTTP status code
           example: 401
+    FetchResult:
+      type: array
+      description: Array of matching entities
+      items:
+        $ref: '#/components/schemas/Entity'
   responses:
     Forbidden:
       description: Service key (admin token) required for this operation
@@ -407,14 +407,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Missing or invalid authentication token
+    InternalServerError:
+      description: Internal server error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: Internal server error
+    Unauthorized:
+      description: Missing or invalid authentication token
       content:
         application/json:
           schema:

@@ -111,14 +111,14 @@ components:
           description: HTTP status code
           example: 401
   responses:
-    Unauthorized:
-      description: Missing or invalid authentication token
+    Forbidden:
+      description: Service key (admin token) required for this operation
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Forbidden:
-      description: Service key (admin token) required for this operation
+    Unauthorized:
+      description: Missing or invalid authentication token
       content:
         application/json:
           schema:
