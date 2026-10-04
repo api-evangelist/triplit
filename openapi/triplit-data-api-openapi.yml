@@ -309,6 +309,21 @@ paths:
           $ref: '#/components/responses/Forbidden'
 components:
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Error type name
+          example: TriplitError
+        message:
+          type: string
+          description: Human-readable error description
+          example: No token provided
+        status:
+          type: integer
+          description: HTTP status code
+          example: 401
     BulkInsertBody:
       type: object
       description: Map of collection names to arrays of entities to insert
@@ -324,6 +339,15 @@ components:
         users:
         - id: u1
           name: Alice
+    Entity:
+      type: object
+      description: A database entity (document) stored in a collection
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the entity
+          example: abc123
+      additionalProperties: true
     CollectionQuery:
       type: object
       required:
@@ -371,38 +395,14 @@ components:
           type: array
           description: Cursor for pagination
           items: {}
-    Entity:
-      type: object
-      description: A database entity (document) stored in a collection
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the entity
-          example: abc123
-      additionalProperties: true
-    ErrorResponse:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Error type name
-          example: TriplitError
-        message:
-          type: string
-          description: Human-readable error description
-          example: No token provided
-        status:
-          type: integer
-          description: HTTP status code
-          example: 401
     FetchResult:
       type: array
       description: Array of matching entities
       items:
         $ref: '#/components/schemas/Entity'
   responses:
-    Forbidden:
-      description: Service key (admin token) required for this operation
+    Unauthorized:
+      description: Missing or invalid authentication token
       content:
         application/json:
           schema:
@@ -413,8 +413,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Missing or invalid authentication token
+    Forbidden:
+      description: Service key (admin token) required for this operation
       content:
         application/json:
           schema:
