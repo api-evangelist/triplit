@@ -90,7 +90,24 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
 components:
+  responses:
+    Unauthorized:
+      description: Missing or invalid authentication token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Service key (admin token) required for this operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    WebhookDefinition:
+      type: object
+      description: Webhook configuration
+      additionalProperties: true
     ErrorResponse:
       type: object
       properties:
@@ -106,23 +123,6 @@ components:
           type: integer
           description: HTTP status code
           example: 401
-    WebhookDefinition:
-      type: object
-      description: Webhook configuration
-      additionalProperties: true
-  responses:
-    Unauthorized:
-      description: Missing or invalid authentication token
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Forbidden:
-      description: Service key (admin token) required for this operation
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     BearerAuth:
       type: http
